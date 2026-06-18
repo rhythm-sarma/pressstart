@@ -249,16 +249,7 @@ function HeroSection() {
           City Centre Mall, Guwahati
         </motion.div>
         
-        <motion.div 
-          className="hero-buttons"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 1.3 }}
-        >
-          <a href="#register" className="btn btn-primary">Register for Valorant</a>
-          <a href="#register" className="btn btn-secondary">Register for FC 26</a>
-          <a href="#register" className="btn btn-outline">Become a Volunteer</a>
-        </motion.div>
+
       </motion.div>
     </section>
   )
