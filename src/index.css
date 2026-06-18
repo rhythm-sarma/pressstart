@@ -156,8 +156,8 @@ body {
 }
 
 .navbar-cta {
-  background: var(--lime) !important;
-  color: var(--black) !important;
+  background: var(--valorant-red) !important;
+  color: var(--white) !important;
   padding: 0.6rem 1.5rem !important;
   border: 3px solid var(--black);
   font-weight: 800 !important;
