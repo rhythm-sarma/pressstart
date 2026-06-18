@@ -415,8 +415,6 @@ function ActivitiesSection() {
     { name: 'Photo Booth', desc: 'Strike a pose with gaming props, neon lights, and share your moments.', free: true },
     { name: 'Gaming Quizzes', desc: 'Prove your gaming knowledge and win rewards for top scores.', free: true },
     { name: 'Surprise Giveaways', desc: 'Random drops throughout the day — stay alert for free goodies!', free: true },
-    { name: 'Aim Challenge', desc: 'Test your precision in our aim training arcade booth.', free: true },
-    { name: 'Trading Card Zone', desc: 'Trade, collect, and show off rare gaming cards with fellow gamers.', free: true },
   ]
   
   return (
