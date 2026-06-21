@@ -813,20 +813,20 @@ function Footer() {
         <div className="footer-col">
           <h4>Connect</h4>
           <ul>
-            <li><a href="https://twitch.tv/pressstartxo" target="_blank" rel="noopener noreferrer">Twitch</a></li>
-            <li><a href="#" target="_blank" rel="noopener noreferrer">Instagram</a></li>
-            <li><a href="#" target="_blank" rel="noopener noreferrer">Discord</a></li>
-            <li><a href="#" target="_blank" rel="noopener noreferrer">Twitter / X</a></li>
+            <li><a href="https://www.twitch.tv/pressstartxo" target="_blank" rel="noopener noreferrer">Twitch</a></li>
+            <li><a href="https://www.instagram.com/pressstartxo/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
           </ul>
         </div>
       </div>
       <div className="footer-bottom">
         <p>&copy; 2026 PRESS START. All rights reserved.</p>
         <div className="footer-socials">
-          <a href="https://twitch.tv/pressstartxo" target="_blank" rel="noopener noreferrer" aria-label="Twitch">TV</a>
-          <a href="#" aria-label="Instagram">IG</a>
-          <a href="#" aria-label="Discord">DC</a>
-          <a href="#" aria-label="Twitter">X</a>
+          <a href="https://www.twitch.tv/pressstartxo" target="_blank" rel="noopener noreferrer" aria-label="Twitch">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2H3v16h5v4l4-4h5l4-4V2z"/><path d="M11 11V7"/><path d="M16 11V7"/></svg>
+          </a>
+          <a href="https://www.instagram.com/pressstartxo/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+          </a>
         </div>
       </div>
     </footer>
