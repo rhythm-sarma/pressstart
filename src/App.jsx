@@ -391,7 +391,7 @@ function TournamentsSection() {
             </div>
           </div>
           <div className="tournament-card-footer">
-            <a href="#register" className="btn btn-secondary">Register for FC 26 →</a>
+            <span className="btn btn-secondary" style={{ opacity: 0.5, cursor: 'not-allowed' }}>Coming Soon</span>
           </div>
         </motion.div>
       </motion.div>
