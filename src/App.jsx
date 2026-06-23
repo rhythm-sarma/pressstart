@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import ValorantFormModal from './ValorantFormModal'
+import VolunteerFormModal from './VolunteerFormModal'
 import './index.css'
 
 /* ===== Animation Variants ===== */
@@ -348,7 +350,7 @@ function TournamentsSection() {
             </div>
           </div>
           <div className="tournament-card-footer">
-            <a href="#register" className="btn btn-valorant">Register Your Team →</a>
+            <span className="btn btn-valorant" style={{ opacity: 0.5, cursor: 'not-allowed' }}>Coming Soon</span>
           </div>
         </motion.div>
         
@@ -640,9 +642,10 @@ function CosplaySection() {
 }
 
 /* ===== Registration Section ===== */
-function RegistrationSection() {
+function RegistrationSection({ onRegister }) {
   const cards = [
     {
+      key: 'valorant',
       type: 'card-valorant',
       accent: 'accent-red',
       title: 'Valorant Team Registration',
@@ -655,10 +658,11 @@ function RegistrationSection() {
         'Professional casting & commentary',
       ],
       btnClass: 'btn-valorant',
-      btnText: 'Register Team',
-      btnLink: '#'
+      btnText: 'Coming Soon',
+      disabled: true,
     },
     {
+      key: 'fc26',
       type: 'card-fc',
       accent: 'accent-purple',
       title: 'FC 26 Registration',
@@ -671,10 +675,11 @@ function RegistrationSection() {
         'Live crowd atmosphere',
       ],
       btnClass: 'btn-secondary',
-      btnText: 'Register Now',
-      btnLink: '#'
+      btnText: 'Coming Soon',
+      disabled: true,
     },
     {
+      key: 'volunteer',
       type: 'card-volunteer',
       accent: 'accent-lime',
       title: 'Volunteer Application',
@@ -688,7 +693,7 @@ function RegistrationSection() {
       ],
       btnClass: 'btn-primary',
       btnText: 'Apply to Volunteer',
-      btnLink: '#'
+      disabled: false,
     }
   ]
   
@@ -733,7 +738,14 @@ function RegistrationSection() {
                   <li key={j}><span className="check">+</span> {feat}</li>
                 ))}
               </ul>
-              <a href={card.btnLink} className={`btn ${card.btnClass}`}>{card.btnText}</a>
+              <button 
+                onClick={(e) => { e.preventDefault(); if (!card.disabled) onRegister(card.key); }} 
+                className={`btn ${card.btnClass}${card.disabled ? ' btn-disabled' : ''}`}
+                style={{ width: '100%', justifyContent: 'center' }}
+                disabled={card.disabled}
+              >
+                {card.btnText}
+              </button>
             </div>
           </motion.div>
         ))}
@@ -833,8 +845,300 @@ function Footer() {
   )
 }
 
+/* ===== Registration Modal Component ===== */
+function RegistrationModal({ game, onClose, onSubmit, isSubmitting }) {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    teamName: '',
+    teamMembers: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const getPrice = () => {
+    if (game === 'valorant') return '₹500';
+    if (game === 'fc26') return '₹100';
+    return 'FREE';
+  };
+
+  const getTitle = () => {
+    if (game === 'valorant') return 'Valorant Team Registration';
+    if (game === 'fc26') return 'FC 26 Registration';
+    return 'Volunteer Application';
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <div className="modal-header">
+          <h3>{getTitle()}</h3>
+          <button className="modal-close-btn" onClick={onClose}>×</button>
+        </div>
+        <div className="modal-body">
+          <div className="modal-game-info">
+            <span className="modal-game-label">Entry Fee</span>
+            <span className="modal-game-price">{getPrice()}</span>
+          </div>
+          <form className="registration-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="name">Full Name</label>
+              <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                required 
+                value={formData.name} 
+                onChange={handleChange}
+                placeholder="Enter your full name"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="email">Email Address</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                required 
+                value={formData.email} 
+                onChange={handleChange}
+                placeholder="your.email@gmail.com"
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="phone">Phone Number</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                name="phone" 
+                required 
+                value={formData.phone} 
+                onChange={handleChange}
+                placeholder="10-digit mobile number"
+              />
+            </div>
+
+            {game === 'valorant' && (
+              <>
+                <div className="form-group">
+                  <label htmlFor="teamName">Team Name</label>
+                  <input 
+                    type="text" 
+                    id="teamName" 
+                    name="teamName" 
+                    required 
+                    value={formData.teamName} 
+                    onChange={handleChange}
+                    placeholder="Enter your squad's name"
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="teamMembers">Team Members (Include IGNs, 1 per line)</label>
+                  <textarea 
+                    id="teamMembers" 
+                    name="teamMembers" 
+                    rows="4"
+                    required 
+                    value={formData.teamMembers} 
+                    onChange={handleChange}
+                    placeholder="Player 2 (IGN)&#10;Player 3 (IGN)&#10;Player 4 (IGN)&#10;Player 5 (IGN)"
+                  />
+                </div>
+              </>
+            )}
+
+            <button 
+              type="submit" 
+              className="btn btn-primary form-submit-btn" 
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Processing...' : game === 'volunteer' ? 'Submit Application' : 'Proceed to Payment'}
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ===== Main App ===== */
 function App() {
+  const [activeRegGame, setActiveRegGame] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState(null); // 'checking', 'SUCCESS', 'FAILED', null
+  const [statusOrderId, setStatusOrderId] = useState('');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const orderId = params.get('order_id');
+    if (orderId) {
+      setPaymentStatus('checking');
+      setStatusOrderId(orderId);
+      
+      const checkStatus = async () => {
+        try {
+          const res = await fetch(`/api/order-status/${orderId}`);
+          const data = await res.json();
+          if (data.status) {
+            setPaymentStatus(data.status);
+          } else {
+            setPaymentStatus('FAILED');
+          }
+        } catch (e) {
+          console.error(e);
+          setPaymentStatus('FAILED');
+        }
+      };
+
+      checkStatus();
+    }
+  }, []);
+
+  const handleRegisterSubmit = async (formData) => {
+    setIsSubmitting(true);
+
+    // Volunteer — send directly to Google Sheets (no backend needed)
+    if (activeRegGame === 'volunteer') {
+      const vd = formData.volunteerData || {};
+      const sheetData = {
+        Timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+        Name: formData.name || "",
+        Email: formData.email || "",
+        Phone: formData.phone || "",
+        Age: vd.age || "",
+        Gender: vd.gender || "",
+        City: vd.city || "",
+        Instagram: vd.instagram || "",
+        "Available Full Duration": vd.availableFullDuration || "",
+        "Available Briefing": vd.availableBriefing || "",
+        "Volunteered Before": vd.volunteeredBefore || "",
+        "Previous Events": vd.previousEvents || "",
+        "Other Experiences": vd.otherExperiences || "",
+        "Interested Roles": Array.isArray(vd.interestedRoles) ? vd.interestedRoles.join(", ") : "",
+        "Why Volunteer": vd.whyVolunteer || "",
+        "Emergency Contact": vd.emergencyContact || "",
+        "Followed Instagram": vd.followedInstagram || "",
+        "Followed Twitch": vd.followedTwitch || ""
+      };
+
+      try {
+        await fetch("https://script.google.com/macros/s/AKfycbwsDmv7oMJec4C5Ro7lquoLwbdm7oGLyXbaT3FdIyyLO05tZSLaUyra-yg9q4E7Cai3/exec", {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(sheetData)
+        });
+        setPaymentStatus('SUCCESS');
+        setActiveRegGame(null);
+      } catch (err) {
+        console.error("Google Sheets error:", err);
+        alert('Something went wrong submitting your application. Please try again.');
+      }
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Paid registrations — use backend
+    try {
+      const response = await fetch(`/api/create-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, game: activeRegGame })
+      });
+      const data = await response.json();
+      
+      if (data.free) {
+        setPaymentStatus('SUCCESS');
+        setIsSubmitting(false);
+        setActiveRegGame(null);
+        return;
+      }
+
+      if (data.order_id) {
+        if (typeof window.Razorpay === 'undefined') {
+          alert('Razorpay SDK failed to load. Please check your internet connection.');
+          setIsSubmitting(false);
+          return;
+        }
+
+        const options = {
+          key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+          amount: data.amount,
+          currency: data.currency,
+          name: "PRESS START",
+          description: "Tournament Registration",
+          order_id: data.order_id,
+          handler: async function (response) {
+            try {
+              setPaymentStatus('checking');
+              const verifyRes = await fetch('/api/verify-payment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_signature: response.razorpay_signature
+                })
+              });
+              const verifyData = await verifyRes.json();
+              
+              if (verifyData.success) {
+                setPaymentStatus('SUCCESS');
+                setStatusOrderId(data.order_id);
+              } else {
+                setPaymentStatus('FAILED');
+                setStatusOrderId(data.order_id);
+              }
+              setActiveRegGame(null);
+            } catch (err) {
+              console.error("Verification error:", err);
+              setPaymentStatus('FAILED');
+              setStatusOrderId(data.order_id);
+              setActiveRegGame(null);
+            }
+          },
+          prefill: {
+            name: formData.name,
+            email: formData.email,
+            contact: formData.phone
+          },
+          theme: {
+            color: "#6d28d9"
+          },
+          modal: {
+            ondismiss: function() {
+              setIsSubmitting(false);
+            }
+          }
+        };
+        
+        const rzp1 = new window.Razorpay(options);
+        rzp1.on('payment.failed', function (response){
+          alert("Payment failed: " + response.error.description);
+          setPaymentStatus('FAILED');
+          setStatusOrderId(data.order_id);
+          setActiveRegGame(null);
+        });
+        rzp1.open();
+      } else {
+        alert('Failed to initialize payment: ' + (data.error || 'Unknown error'));
+        setIsSubmitting(false);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error connecting to backend server.');
+      setIsSubmitting(false);
+    }
+  };
+
   const marqueeItems1 = [
     'VALORANT CHAMPIONSHIP',
     'FC 26 TOURNAMENT',
@@ -854,6 +1158,13 @@ function App() {
     'GAMING QUIZZES',
     'SURPRISE GIVEAWAYS',
   ]
+
+  const clearStatus = () => {
+    setPaymentStatus(null);
+    setStatusOrderId('');
+    // Remove query params from url without reloading
+    window.history.replaceState({}, document.title, window.location.pathname);
+  };
   
   return (
     <>
@@ -877,12 +1188,82 @@ function App() {
       
       <CountdownSection />
       
-      <RegistrationSection />
+      <RegistrationSection onRegister={(gameKey) => setActiveRegGame(gameKey)} />
       
       <MarqueeStrip items={marqueeItems1} variant="lime" />
       <Footer />
+
+      {/* Registration Modal — Volunteer uses dedicated multi-step form */}
+      {activeRegGame === 'volunteer' && (
+        <VolunteerFormModal
+          onClose={() => setActiveRegGame(null)}
+          onSubmit={handleRegisterSubmit}
+          isSubmitting={isSubmitting}
+        />
+      )}
+
+      {/* Registration Modal — Valorant uses its dedicated multi-step form */}
+      {activeRegGame === 'valorant' && (
+        <ValorantFormModal
+          onClose={() => setActiveRegGame(null)}
+          onSubmit={handleRegisterSubmit}
+          isSubmitting={isSubmitting}
+        />
+      )}
+
+      {/* Registration Modal — FC26 uses the existing simple form */}
+      {activeRegGame && activeRegGame !== 'volunteer' && activeRegGame !== 'valorant' && (
+        <RegistrationModal 
+          game={activeRegGame}
+          onClose={() => setActiveRegGame(null)}
+          onSubmit={handleRegisterSubmit}
+          isSubmitting={isSubmitting}
+        />
+      )}
+
+      {/* Transaction Status Overlay */}
+      {paymentStatus && (
+        <div className="status-overlay">
+          <div className="status-card">
+            {paymentStatus === 'checking' && (
+              <>
+                <div className="status-title">Verifying Payment</div>
+                <div className="status-desc">Please wait while we confirm your transaction...</div>
+              </>
+            )}
+
+            {paymentStatus === 'SUCCESS' && (
+              <>
+                <div className="status-icon success">✓</div>
+                <div className="status-title">Registration Successful!</div>
+                <div className="status-desc">
+                  GG! Your registration has been confirmed. We've saved your details under transaction ID: <br />
+                  <strong style={{ color: 'var(--violet)' }}>{statusOrderId || 'Free Ticket'}</strong>.
+                </div>
+                <button className="btn btn-primary status-btn" onClick={clearStatus}>
+                  Back to Event Home
+                </button>
+              </>
+            )}
+
+            {paymentStatus === 'FAILED' && (
+              <>
+                <div className="status-icon failed">✗</div>
+                <div className="status-title">Registration Failed</div>
+                <div className="status-desc">
+                  Oops! We couldn't verify your payment. If money was debited, it will be refunded. 
+                  Please try registering again or contact support.
+                </div>
+                <button className="btn btn-secondary status-btn" onClick={clearStatus}>
+                  Try Again
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </>
   )
 }
 
-export default App
+export default App;
