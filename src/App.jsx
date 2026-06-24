@@ -600,7 +600,7 @@ function CosplaySection() {
               Dress Up.<br /><span style={{ color: 'var(--lime)' }}>Show Up. Stand Out.</span>
             </h2>
           </div>
-          <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, marginBottom: '1rem' }}>
+          <p style={{ color: 'rgba(0,0,0,0.8)', lineHeight: 1.7, marginBottom: '1rem', fontWeight: 500 }}>
             Cosplayers bring the magic of gaming to life! Whether you're in full costume or just love the aesthetic, 
             the cosplay zone is where creativity meets community.
           </p>
