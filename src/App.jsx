@@ -93,7 +93,7 @@ function Navbar() {
           boxShadow: scrolled ? '0 4px 30px rgba(125, 57, 235, 0.3)' : 'none',
         }}
       >
-        <img src="/images/logo.png" alt="PRESS START" className="navbar-logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} />
+        <img src="/images/logo.png" alt="PRESS START" className="navbar-logo" onClick={() => window.location.href = '/'} />
         
         <ul className="navbar-links">
           {links.map(link => (
@@ -102,7 +102,7 @@ function Navbar() {
           <li><a href="#register" className="navbar-cta">Register Now</a></li>
         </ul>
         
-        <button className="mobile-menu-btn" onClick={() => setMenuOpen(true)} aria-label="Open menu">
+        <button className="mobile-menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
           <span /><span /><span />
         </button>
       </motion.nav>
@@ -574,7 +574,7 @@ function VenueSection() {
           variants={slideRight}
         >
           <div className="venue-image-wrapper">
-            <img src="/images/location-reveal.jpg" alt="City Center Mall - PRESS START Venue" className="venue-image" />
+            <img src="/images/location_reveal.png" alt="City Center Mall - PRESS START Venue" className="venue-image" />
           </div>
         </motion.div>
       </div>
