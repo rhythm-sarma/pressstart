@@ -242,14 +242,9 @@ function HeroSection() {
           Tournaments · Free Activities · Cosplay · Live Streaming · Prizes & Giveaways
         </motion.p>
         
-        <motion.div 
-          className="hero-venue"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 1.1 }}
-        >
-          City Centre Mall, Guwahati
-        </motion.div>
+        <div className="hero-venue">
+          City Center Mall, Guwahati
+        </div>
         
 
       </motion.div>
@@ -331,7 +326,7 @@ function TournamentsSection() {
               <span className="tournament-detail-icon">—</span>
               <div className="tournament-detail-text">
                 <strong>Offline Semi-Finals & Grand Finals</strong>
-                Top teams battle it out live at City Centre Mall
+                Top teams battle it out live at City Center Mall
               </div>
             </div>
             <div className="tournament-detail">
@@ -532,8 +527,9 @@ function VenueSection() {
         >
           <div className="section-header" style={{ textAlign: 'left' }}>
             <span className="section-tag">Location Reveal</span>
+            <div className="venue-detail-title">Location</div>
             <h2 className="section-title" style={{ textAlign: 'left' }}>
-              City Centre Mall<br />
+              City Center Mall<br />
               <span style={{ color: 'var(--lime)' }}>Guwahati</span>
             </h2>
           </div>
@@ -577,7 +573,9 @@ function VenueSection() {
           viewport={{ once: true }}
           variants={slideRight}
         >
-          <img src="/images/location-reveal.jpg" alt="City Centre Mall - PRESS START Venue" className="venue-image" />
+          <div className="venue-image-wrapper">
+            <img src="/images/location-reveal.jpg" alt="City Center Mall - PRESS START Venue" className="venue-image" />
+          </div>
         </motion.div>
       </div>
     </section>
@@ -648,8 +646,8 @@ function RegistrationSection({ onRegister }) {
       key: 'valorant',
       type: 'card-valorant',
       accent: 'accent-red',
-      title: 'Valorant Team Registration',
-      desc: 'Form your squad of 5, dominate the online qualifiers, and battle it out live on stage at City Centre Mall. Are you ready to prove your team is the best?',
+      title: 'Valorant 5v5 Championship',
+      desc: 'Form your squad of 5, dominate the online qualifiers, and battle it out live on stage at City Center Mall. Are you ready to prove your team is the best?',
       features: [
         '5v5 team format',
         'Online qualifiers → Offline finals',
@@ -670,7 +668,7 @@ function RegistrationSection({ onRegister }) {
       features: [
         '1v1 on PS5',
         'Single elimination bracket',
-        'Play at City Centre Mall',
+        'Play at City Center Mall',
         'Prizes for top players',
         'Live crowd atmosphere',
       ],
@@ -1146,7 +1144,7 @@ function App() {
     'COSPLAY',
     'LIVE STREAMING',
     'GIVEAWAYS',
-    'CITY CENTRE MALL',
+    'CITY CENTER MALL',
   ]
   
   const marqueeItems2 = [
