@@ -66,7 +66,7 @@ function useCountdown(targetDate) {
 }
 
 /* ===== Navbar ===== */
-function Navbar() {
+function Navbar({ onContactClick }) {
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   
@@ -100,6 +100,7 @@ function Navbar() {
           {links.map(link => (
             <li key={link.href}><a href={link.href}>{link.label}</a></li>
           ))}
+          <li><a href="#" onClick={(e) => { e.preventDefault(); onContactClick(); }}>Contact</a></li>
           <li><a href="#register" className="navbar-cta">Register Now</a></li>
         </ul>
         
@@ -120,6 +121,7 @@ function Navbar() {
             {links.map(link => (
               <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}</a>
             ))}
+            <a href="#" onClick={(e) => { e.preventDefault(); setMenuOpen(false); onContactClick(); }}>Contact</a>
             <a href="#register" onClick={() => setMenuOpen(false)} style={{ color: '#C6FF33' }}>Register Now</a>
           </motion.div>
         )}
@@ -826,6 +828,7 @@ function Footer() {
           <ul>
             <li><a href="https://www.twitch.tv/pressstartxo" target="_blank" rel="noopener noreferrer">Twitch</a></li>
             <li><a href="https://www.instagram.com/pressstartxo/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            <li><a href="tel:+917086758292">+91 7086758292</a></li>
           </ul>
         </div>
       </div>
@@ -968,8 +971,42 @@ function RegistrationModal({ game, onClose, onSubmit, isSubmitting }) {
   );
 }
 
+/* ===== Contact Modal Component ===== */
+function ContactModal({ onClose }) {
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div 
+        className="modal-content" 
+        onClick={(e) => e.stopPropagation()} 
+        style={{ 
+          maxWidth: '400px', 
+          width: '90%',
+          textAlign: 'center',
+          backgroundColor: '#fff',
+          padding: '0',
+          overflow: 'hidden'
+        }}
+      >
+        <div className="modal-header" style={{ backgroundColor: '#000', borderBottom: 'none' }}>
+          <h3>Contact Us</h3>
+          <button className="modal-close-btn" onClick={onClose}>×</button>
+        </div>
+        <div className="modal-body" style={{ padding: '4rem 2rem', backgroundColor: '#fff' }}>
+          <p style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#555', fontWeight: 500 }}>
+            For inquiries, please call or WhatsApp:
+          </p>
+          <a href="tel:+917086758292" style={{ fontSize: '2.5rem', color: '#000', fontWeight: '900', textDecoration: 'none', display: 'block' }}>
+            +91 7086758292
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ===== Main App ===== */
 function App() {
+  const [showContactModal, setShowContactModal] = useState(false);
   const [activeRegGame, setActiveRegGame] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(null); // 'checking', 'SUCCESS', 'FAILED', null
@@ -1049,6 +1086,7 @@ function App() {
         Player5: vd.player5 || "",
         Player6: vd.player6 || "",
         AdditionalInfo: vd.additionalInfo || "",
+        "Followed Instagram": vd.instagramFollowed || "No",
       };
     } else if (activeRegGame === 'fc26') {
       sheetUrl = "https://script.google.com/macros/s/AKfycbxk5QPPvac8a4btuCJ-BP1m2N905pvY0yqc56e9m-OajCZcWSde1yOY1GslvrBKC-fy/exec";
@@ -1063,6 +1101,7 @@ function App() {
         "Contact Number (WhatsApp)": fd.whatsapp || fd.phone || formData.phone || "",
         "Platform": "PS5",
         "Payment Completed": fd.paymentCompleted || "No",
+        "Payment Name": fd.paymentName || "",
         "Information Accurate": confirms.includes('I confirm that all information provided is accurate.') ? "Yes" : "No",
         "Agreed to Tournament Rules": confirms.includes('I agree to follow tournament rules and decisions made by tournament admins.') ? "Yes" : "No",
         "Fair Play Agreement": confirms.includes('I understand that misconduct, cheating, or abusive behavior may result in disqualification.') ? "Yes" : "No",
@@ -1128,7 +1167,7 @@ function App() {
   return (
     <>
       <div className="noise-overlay" />
-      <Navbar />
+      <Navbar onContactClick={() => setShowContactModal(true)} />
       <HeroSection />
       
       <MarqueeStrip items={marqueeItems1} variant="lime" />
@@ -1187,6 +1226,11 @@ function App() {
           onSubmit={handleRegisterSubmit}
           isSubmitting={isSubmitting}
         />
+      )}
+
+      {/* Contact Modal */}
+      {showContactModal && (
+        <ContactModal onClose={() => setShowContactModal(false)} />
       )}
 
       {/* Transaction Status Overlay */}

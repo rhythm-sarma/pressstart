@@ -28,6 +28,7 @@ function Fc26FormModal({ onClose, onSubmit, isSubmitting }) {
     
     // Step 3
     paymentCompleted: '',
+    paymentName: '',
   })
 
   const handleChange = (e) => {
@@ -76,6 +77,7 @@ function Fc26FormModal({ onClose, onSubmit, isSubmitting }) {
     if (stepNum === 3) {
       if (!formData.paymentCompleted) newErrors.paymentCompleted = 'Please confirm if payment is completed'
       else if (formData.paymentCompleted !== 'Yes') newErrors.paymentCompleted = 'Payment must be completed to register'
+      if (!formData.paymentName.trim()) newErrors.paymentName = 'Payment name is required'
     }
 
     setErrors(newErrors)
@@ -110,6 +112,7 @@ function Fc26FormModal({ onClose, onSubmit, isSubmitting }) {
           additionalInfo: formData.additionalInfo,
           confirmations: formData.confirmations,
           paymentCompleted: formData.paymentCompleted,
+          paymentName: formData.paymentName,
         }
       })
     }
@@ -323,6 +326,19 @@ function Fc26FormModal({ onClose, onSubmit, isSubmitting }) {
                       </label>
                     </div>
                     {errors.paymentCompleted && <span className="field-error">{errors.paymentCompleted}</span>}
+                  </div>
+
+                  <div className={`form-group ${errors.paymentName ? 'has-error' : ''}`} style={{ textAlign: 'left' }}>
+                    <label htmlFor="paymentName">Payment Made By (Name on UPI) <span className="required">*</span></label>
+                    <input
+                      type="text"
+                      id="paymentName"
+                      name="paymentName"
+                      value={formData.paymentName}
+                      onChange={handleChange}
+                      placeholder="Name registered with your UPI app"
+                    />
+                    {errors.paymentName && <span className="field-error">{errors.paymentName}</span>}
                   </div>
                 </motion.div>
               )}

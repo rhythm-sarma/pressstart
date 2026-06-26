@@ -34,6 +34,7 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
     // Step 4 — Additional Info & Confirmations
     additionalInfo: '',
     confirmations: [],
+    instagramFollowed: '',
     
     // Step 5 — Payment
     paymentName: '',
@@ -91,6 +92,7 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
       if (formData.confirmations.length !== CONFIRMATION_ITEMS.length) {
         newErrors.confirmations = 'Please agree to all terms to proceed'
       }
+      if (!formData.instagramFollowed) newErrors.instagramFollowed = 'Please select Yes or No'
     }
 
     if (stepNum === 5) {
@@ -133,6 +135,7 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
           player5: formData.player5,
           player6: formData.player6,
           additionalInfo: formData.additionalInfo,
+          instagramFollowed: formData.instagramFollowed,
           paymentName: formData.paymentName,
         }
       })
@@ -453,6 +456,21 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
                         ))}
                       </div>
                       {errors.confirmations && <span className="field-error">{errors.confirmations}</span>}
+                    </div>
+
+                    <div className={`form-group ${errors.instagramFollowed ? 'has-error' : ''}`}>
+                      <label>Have you followed our Instagram page? <span className="required">*</span></label>
+                      <div className="radio-group">
+                        <label className="radio-label">
+                          <input type="radio" name="instagramFollowed" value="Yes" checked={formData.instagramFollowed === 'Yes'} onChange={handleChange} />
+                          <span className="radio-custom"></span> Yes
+                        </label>
+                        <label className="radio-label">
+                          <input type="radio" name="instagramFollowed" value="No" checked={formData.instagramFollowed === 'No'} onChange={handleChange} />
+                          <span className="radio-custom"></span> No
+                        </label>
+                      </div>
+                      {errors.instagramFollowed && <span className="field-error">{errors.instagramFollowed}</span>}
                     </div>
                   </div>
                 </motion.div>
