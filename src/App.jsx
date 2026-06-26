@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import ValorantFormModal from './ValorantFormModal'
+import Fc26FormModal from './Fc26FormModal'
 import VolunteerFormModal from './VolunteerFormModal'
 import './index.css'
 
@@ -345,7 +346,7 @@ function TournamentsSection() {
             </div>
           </div>
           <div className="tournament-card-footer">
-            <span className="btn btn-valorant" style={{ opacity: 0.5, cursor: 'not-allowed' }}>Coming Soon</span>
+            <a href="#register" className="btn btn-valorant">Register Now</a>
           </div>
         </motion.div>
         
@@ -386,7 +387,7 @@ function TournamentsSection() {
             </div>
           </div>
           <div className="tournament-card-footer">
-            <span className="btn btn-secondary" style={{ opacity: 0.5, cursor: 'not-allowed' }}>Coming Soon</span>
+            <a href="#register" className="btn btn-secondary" style={{ background: 'var(--cyan)', color: 'var(--black)' }}>Register Now</a>
           </div>
         </motion.div>
       </motion.div>
@@ -656,8 +657,8 @@ function RegistrationSection({ onRegister }) {
         'Professional casting & commentary',
       ],
       btnClass: 'btn-valorant',
-      btnText: 'Coming Soon',
-      disabled: true,
+      btnText: 'Register Now',
+      disabled: false,
     },
     {
       key: 'fc26',
@@ -672,9 +673,9 @@ function RegistrationSection({ onRegister }) {
         'Prizes for top players',
         'Live crowd atmosphere',
       ],
-      btnClass: 'btn-secondary',
-      btnText: 'Coming Soon',
-      disabled: true,
+      btnClass: 'btn-primary',
+      btnText: 'Register Now',
+      disabled: false,
     },
     {
       key: 'volunteer',
@@ -1003,11 +1004,14 @@ function App() {
   const handleRegisterSubmit = async (formData) => {
     setIsSubmitting(true);
 
-    // Volunteer — send directly to Google Sheets (no backend needed)
+    let sheetUrl = "https://script.google.com/macros/s/AKfycbwsDmv7oMJec4C5Ro7lquoLwbdm7oGLyXbaT3FdIyyLO05tZSLaUyra-yg9q4E7Cai3/exec";
+    let sheetData = {};
+
     if (activeRegGame === 'volunteer') {
       const vd = formData.volunteerData || {};
-      const sheetData = {
+      sheetData = {
         Timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+        Game: 'Volunteer',
         Name: formData.name || "",
         Email: formData.email || "",
         Phone: formData.phone || "",
@@ -1026,115 +1030,72 @@ function App() {
         "Followed Instagram": vd.followedInstagram || "",
         "Followed Twitch": vd.followedTwitch || ""
       };
-
-      try {
-        await fetch("https://script.google.com/macros/s/AKfycbwsDmv7oMJec4C5Ro7lquoLwbdm7oGLyXbaT3FdIyyLO05tZSLaUyra-yg9q4E7Cai3/exec", {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(sheetData)
-        });
-        setPaymentStatus('SUCCESS');
-        setActiveRegGame(null);
-      } catch (err) {
-        console.error("Google Sheets error:", err);
-        alert('Something went wrong submitting your application. Please try again.');
-      }
-      setIsSubmitting(false);
-      return;
+    } else if (activeRegGame === 'valorant') {
+      sheetUrl = "https://script.google.com/macros/s/AKfycbyeWLlXBkUhBnWU5gt9LE27QKi9Y_S0V23AcOMqypTmFtuKaRhBph3XsDCfo2o0Zwgz/exec";
+      const vd = formData.valorantData || {};
+      sheetData = {
+        Timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+        OrderId: `Payment By: ${vd.paymentName || ''}`,
+        Status: "PAID",
+        TeamName: vd.teamName || "",
+        City: vd.city || "",
+        CaptainName: vd.captainName || formData.name || "",
+        CaptainEmail: vd.captainEmail || formData.email || "",
+        CaptainPhone: vd.captainPhone || formData.phone || "",
+        CaptainWhatsApp: vd.captainWhatsApp || "",
+        Player2: vd.player2 || "",
+        Player3: vd.player3 || "",
+        Player4: vd.player4 || "",
+        Player5: vd.player5 || "",
+        Player6: vd.player6 || "",
+        AdditionalInfo: vd.additionalInfo || "",
+      };
+    } else if (activeRegGame === 'fc26') {
+      sheetUrl = "https://script.google.com/macros/s/AKfycbxk5QPPvac8a4btuCJ-BP1m2N905pvY0yqc56e9m-OajCZcWSde1yOY1GslvrBKC-fy/exec";
+      const fd = formData.fc26Data || {};
+      const confirms = fd.confirmations || [];
+      sheetData = {
+        "Registration ID": `FC26-${Date.now().toString().slice(-6)}`,
+        "Timestamp": new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+        "Player Name": fd.playerName || formData.name || "",
+        "City": fd.city || "",
+        "Email": fd.email || formData.email || "",
+        "Contact Number (WhatsApp)": fd.whatsapp || fd.phone || formData.phone || "",
+        "Platform": "PS5",
+        "Payment Completed": fd.paymentCompleted || "No",
+        "Information Accurate": confirms.includes('I confirm that all information provided is accurate.') ? "Yes" : "No",
+        "Agreed to Tournament Rules": confirms.includes('I agree to follow tournament rules and decisions made by tournament admins.') ? "Yes" : "No",
+        "Fair Play Agreement": confirms.includes('I understand that misconduct, cheating, or abusive behavior may result in disqualification.') ? "Yes" : "No",
+        "Media Consent": confirms.includes('I consent to being photographed, recorded and featured in event livestreams and promotional content.') ? "Yes" : "No",
+        "Followed Instagram": fd.instagramFollowed || "No",
+        "Additional Information": fd.additionalInfo || "",
+      };
+    } else {
+      // Fallback for others
+      sheetData = {
+        Timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+        Game: activeRegGame,
+        Name: formData.name || "",
+        Email: formData.email || "",
+        Phone: formData.phone || "",
+        PaymentName: formData.paymentName || ""
+      };
     }
 
-    // Paid registrations — use backend
     try {
-      const response = await fetch(`/api/create-order`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, game: activeRegGame })
+      await fetch(sheetUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sheetData)
       });
-      const data = await response.json();
-      
-      if (data.free) {
-        setPaymentStatus('SUCCESS');
-        setIsSubmitting(false);
-        setActiveRegGame(null);
-        return;
-      }
-
-      if (data.order_id) {
-        if (typeof window.Razorpay === 'undefined') {
-          alert('Razorpay SDK failed to load. Please check your internet connection.');
-          setIsSubmitting(false);
-          return;
-        }
-
-        const options = {
-          key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-          amount: data.amount,
-          currency: data.currency,
-          name: "PRESS START",
-          description: "Tournament Registration",
-          order_id: data.order_id,
-          handler: async function (response) {
-            try {
-              setPaymentStatus('checking');
-              const verifyRes = await fetch('/api/verify-payment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_order_id: response.razorpay_order_id,
-                  razorpay_signature: response.razorpay_signature
-                })
-              });
-              const verifyData = await verifyRes.json();
-              
-              if (verifyData.success) {
-                setPaymentStatus('SUCCESS');
-                setStatusOrderId(data.order_id);
-              } else {
-                setPaymentStatus('FAILED');
-                setStatusOrderId(data.order_id);
-              }
-              setActiveRegGame(null);
-            } catch (err) {
-              console.error("Verification error:", err);
-              setPaymentStatus('FAILED');
-              setStatusOrderId(data.order_id);
-              setActiveRegGame(null);
-            }
-          },
-          prefill: {
-            name: formData.name,
-            email: formData.email,
-            contact: formData.phone
-          },
-          theme: {
-            color: "#6d28d9"
-          },
-          modal: {
-            ondismiss: function() {
-              setIsSubmitting(false);
-            }
-          }
-        };
-        
-        const rzp1 = new window.Razorpay(options);
-        rzp1.on('payment.failed', function (response){
-          alert("Payment failed: " + response.error.description);
-          setPaymentStatus('FAILED');
-          setStatusOrderId(data.order_id);
-          setActiveRegGame(null);
-        });
-        rzp1.open();
-      } else {
-        alert('Failed to initialize payment: ' + (data.error || 'Unknown error'));
-        setIsSubmitting(false);
-      }
+      setPaymentStatus('SUCCESS');
+      setActiveRegGame(null);
     } catch (err) {
-      console.error(err);
-      alert('Error connecting to backend server.');
-      setIsSubmitting(false);
+      console.error("Google Sheets error:", err);
+      alert('Something went wrong submitting your application. Please try again.');
     }
+    setIsSubmitting(false);
   };
 
   const marqueeItems1 = [
@@ -1209,8 +1170,17 @@ function App() {
         />
       )}
 
-      {/* Registration Modal — FC26 uses the existing simple form */}
-      {activeRegGame && activeRegGame !== 'volunteer' && activeRegGame !== 'valorant' && (
+      {/* Registration Modal — FC26 uses its dedicated multi-step form */}
+      {activeRegGame === 'fc26' && (
+        <Fc26FormModal
+          onClose={() => setActiveRegGame(null)}
+          onSubmit={handleRegisterSubmit}
+          isSubmitting={isSubmitting}
+        />
+      )}
+
+      {/* Registration Modal — Fallback for any other game */}
+      {activeRegGame && activeRegGame !== 'volunteer' && activeRegGame !== 'valorant' && activeRegGame !== 'fc26' && (
         <RegistrationModal 
           game={activeRegGame}
           onClose={() => setActiveRegGame(null)}

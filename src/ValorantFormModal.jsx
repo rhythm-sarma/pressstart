@@ -8,7 +8,7 @@ const CONFIRMATION_ITEMS = [
   'I consent to being photographed, recorded and featured in event livestreams and promotional content.',
 ]
 
-const TOTAL_STEPS = 4
+const TOTAL_STEPS = 5
 
 function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
   const [step, setStep] = useState(1)
@@ -34,6 +34,9 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
     // Step 4 — Additional Info & Confirmations
     additionalInfo: '',
     confirmations: [],
+    
+    // Step 5 — Payment
+    paymentName: '',
   })
 
   const handleChange = (e) => {
@@ -90,6 +93,10 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
       }
     }
 
+    if (stepNum === 5) {
+      if (!formData.paymentName.trim()) newErrors.paymentName = 'Payment name is required'
+    }
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -126,12 +133,13 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
           player5: formData.player5,
           player6: formData.player6,
           additionalInfo: formData.additionalInfo,
+          paymentName: formData.paymentName,
         }
       })
     }
   }
 
-  const stepLabels = ['Team Info', 'Captain Info', 'Team Roster', 'Confirmation']
+  const stepLabels = ['Team Info', 'Captain Info', 'Team Roster', 'Confirmation', 'Payment']
 
   const slideVariants = {
     enter: (direction) => ({ x: direction > 0 ? 80 : -80, opacity: 0 }),
@@ -158,7 +166,7 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
         <div className="volunteer-modal-header">
           <div className="volunteer-modal-header-text">
             <h3 style={{ color: 'var(--red)' }}>Valorant Registration</h3>
-            <span className="volunteer-modal-free-tag" style={{ background: 'var(--red)', color: 'white' }}>₹300</span>
+            <span className="volunteer-modal-free-tag" style={{ background: 'var(--red)', color: 'white' }}>₹450</span>
           </div>
           <button className="modal-close-btn" onClick={onClose} aria-label="Close">×</button>
         </div>
@@ -449,6 +457,47 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
                   </div>
                 </motion.div>
               )}
+
+              {/* STEP 5: Payment */}
+              {step === 5 && (
+                <motion.div
+                  key="step5"
+                  custom={slideDirection}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  className="volunteer-step-content"
+                  style={{ textAlign: 'center' }}
+                >
+                  <div className="volunteer-step-title" style={{ textAlign: 'left' }}>
+                    <span className="volunteer-step-number" style={{ color: 'var(--red)' }}>05</span>
+                    Payment
+                  </div>
+
+                  <p style={{ marginBottom: '1rem', color: '#000' }}>Scan the QR code below to pay <strong>₹450</strong></p>
+                  
+                  <div style={{ background: '#fff', padding: '10px', display: 'inline-block', borderRadius: '8px', marginBottom: '10px', border: '3px solid var(--black)', boxShadow: '4px 4px 0px var(--black)' }}>
+                    <img src="/images/QRcode.jpg" alt="Payment QR Code" style={{ width: '200px', height: '200px', display: 'block' }} />
+                  </div>
+                  
+                  <p style={{ fontWeight: '900', marginBottom: '20px', fontSize: '1.2rem', fontFamily: 'var(--font-display)', color: 'var(--violet)' }}>UPI ID: rhythmsarma66@okaxis</p>
+
+                  <div className={`form-group ${errors.paymentName ? 'has-error' : ''}`} style={{ textAlign: 'left' }}>
+                    <label htmlFor="paymentName">Payment Made By (Name on UPI) <span className="required">*</span></label>
+                    <input
+                      type="text"
+                      id="paymentName"
+                      name="paymentName"
+                      value={formData.paymentName}
+                      onChange={handleChange}
+                      placeholder="Name registered with your UPI app"
+                    />
+                    {errors.paymentName && <span className="field-error">{errors.paymentName}</span>}
+                  </div>
+                </motion.div>
+              )}
             </AnimatePresence>
 
             {/* Navigation Buttons */}
@@ -476,7 +525,7 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
                       Processing...
                     </>
                   ) : (
-                    'Pay ₹300 & Register 🎮'
+                    'Submit Application 🎮'
                   )}
                 </button>
               )}
