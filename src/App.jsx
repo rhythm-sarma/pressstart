@@ -101,6 +101,7 @@ function Navbar({ onContactClick }) {
             <li key={link.href}><a href={link.href}>{link.label}</a></li>
           ))}
           <li><a href="#" onClick={(e) => { e.preventDefault(); onContactClick(); }}>Contact</a></li>
+          <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSe8cVYJdxH9XfiB3AXmXaG9GGt9D2XX9oHy79I8ArBgWjFfJQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" className="navbar-cta" style={{ background: 'var(--violet)', color: '#fff', border: '1px solid var(--violet)' }}>Stalls</a></li>
           <li><a href="#register" className="navbar-cta">Register Now</a></li>
         </ul>
         
@@ -122,6 +123,7 @@ function Navbar({ onContactClick }) {
               <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}</a>
             ))}
             <a href="#" onClick={(e) => { e.preventDefault(); setMenuOpen(false); onContactClick(); }}>Contact</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8cVYJdxH9XfiB3AXmXaG9GGt9D2XX9oHy79I8ArBgWjFfJQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} style={{ background: 'var(--violet)', color: '#fff', padding: '0.5rem 1rem', borderRadius: '4px', display: 'inline-block', margin: '0.5rem 0', textDecoration: 'none' }}>Stalls</a>
             <a href="#register" onClick={() => setMenuOpen(false)} style={{ color: '#C6FF33' }}>Register Now</a>
           </motion.div>
         )}
@@ -821,6 +823,7 @@ function Footer() {
             <li><a href="#register">Valorant</a></li>
             <li><a href="#register">FC 26</a></li>
             <li><a href="#register">Volunteer</a></li>
+            <li><a href="https://docs.google.com/forms/d/e/1FAIpQLSe8cVYJdxH9XfiB3AXmXaG9GGt9D2XX9oHy79I8ArBgWjFfJQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: '10px', padding: '5px 10px', border: '1px solid var(--violet)', background: 'var(--violet)', color: '#fff', borderRadius: '4px', textDecoration: 'none' }}>Stalls</a></li>
           </ul>
         </div>
         <div className="footer-col">
@@ -1080,6 +1083,7 @@ function App() {
         CaptainEmail: vd.captainEmail || formData.email || "",
         CaptainPhone: vd.captainPhone || formData.phone || "",
         CaptainWhatsApp: vd.captainWhatsApp || "",
+        CaptainInstagram: vd.captainInstagram || "",
         Player2: vd.player2 || "",
         Player3: vd.player3 || "",
         Player4: vd.player4 || "",
