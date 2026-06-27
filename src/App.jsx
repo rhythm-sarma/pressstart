@@ -105,9 +105,17 @@ function Navbar({ onContactClick }) {
           <li><a href="#register" className="navbar-cta">Register Now</a></li>
         </ul>
         
-        <button className="mobile-menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
-          <span /><span /><span />
-        </button>
+        <div className="mobile-controls">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSe8cVYJdxH9XfiB3AXmXaG9GGt9D2XX9oHy79I8ArBgWjFfJQ/viewform?usp=dialog" 
+             target="_blank" rel="noopener noreferrer" 
+             className="mobile-stalls-btn"
+          >
+            Stalls
+          </a>
+          <button className="mobile-menu-btn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+            <span /><span /><span />
+          </button>
+        </div>
       </motion.nav>
       
       <AnimatePresence>
