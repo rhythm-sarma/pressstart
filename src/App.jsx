@@ -768,7 +768,7 @@ function RegistrationSection({ onRegister }) {
 /* ===== Countdown Section ===== */
 function CountdownSection() {
   // Set a target date ~30 days from now for demo
-  const timeLeft = useCountdown('2026-07-13T10:00:00')
+  const timeLeft = useCountdown('2026-07-16T10:00:00')
   
   return (
     <div className="countdown-banner">
