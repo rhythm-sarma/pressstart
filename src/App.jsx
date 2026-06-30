@@ -702,9 +702,10 @@ function RegistrationSection({ onRegister }) {
         'Networking with organizers',
         'Certificate of participation',
       ],
-      btnClass: 'btn-primary',
-      btnText: 'Apply to Volunteer',
+      btnClass: 'btn-primary btn-vacancy-full',
+      btnText: '🚫 Vacancy Full',
       disabled: false,
+      volunteerFull: true,
     }
   ]
   
@@ -750,7 +751,7 @@ function RegistrationSection({ onRegister }) {
                 ))}
               </ul>
               <button 
-                onClick={(e) => { e.preventDefault(); if (!card.disabled) onRegister(card.key); }} 
+                onClick={(e) => { e.preventDefault(); if (!card.disabled) { if (card.volunteerFull) { onRegister('volunteer-full'); } else { onRegister(card.key); } } }} 
                 className={`btn ${card.btnClass}${card.disabled ? ' btn-disabled' : ''}`}
                 style={{ width: '100%', justifyContent: 'center' }}
                 disabled={card.disabled}
@@ -1016,8 +1017,179 @@ function ContactModal({ onClose }) {
 }
 
 /* ===== Main App ===== */
+/* ===== Volunteer Full Modal ===== */
+function VolunteerFullModal({ onClose }) {
+  return (
+    <div className="modal-overlay" onClick={onClose} style={{ background: 'rgba(0,0,0,0.6)' }}>
+      <motion.div 
+        className="volunteer-full-modal" 
+        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0, y: 40, rotate: -2 }}
+        animate={{ opacity: 1, y: 0, rotate: 0 }}
+        exit={{ opacity: 0, y: 40, rotate: 2 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        style={{ 
+          maxWidth: '460px', 
+          width: '92%',
+          textAlign: 'center',
+          backgroundColor: '#FAFAFA',
+          padding: '0',
+          overflow: 'hidden',
+          border: '3px solid #000',
+          borderRadius: '0px',
+          boxShadow: '8px 8px 0px #000',
+          position: 'relative',
+        }}
+      >
+        {/* Top accent bar */}
+        <div style={{
+          height: '6px', width: '100%',
+          background: '#FF3B3B',
+        }} />
+
+        <div style={{ padding: '2rem 1.75rem 1.75rem' }}>
+          {/* Close button */}
+          <button 
+            onClick={onClose}
+            style={{
+              position: 'absolute', top: '14px', right: '14px',
+              background: '#000', border: '2px solid #000', color: '#fff',
+              width: '32px', height: '32px', fontSize: '1.1rem',
+              cursor: 'pointer', lineHeight: 1, fontWeight: 900,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >×</button>
+
+          {/* FULL stamp */}
+          <div style={{
+            display: 'inline-block',
+            background: '#FF3B3B', color: '#fff',
+            padding: '0.4rem 1.5rem',
+            border: '3px solid #000',
+            boxShadow: '4px 4px 0px #000',
+            fontWeight: 900, fontSize: '0.85rem',
+            letterSpacing: '3px', textTransform: 'uppercase',
+            marginBottom: '1.25rem',
+            transform: 'rotate(-2deg)',
+          }}>
+            🚫 VACANCY FULL
+          </div>
+
+          {/* Title */}
+          <h3 style={{
+            color: '#000', fontSize: '1.6rem', fontWeight: 900,
+            marginBottom: '0.6rem', fontFamily: 'var(--font-heading)',
+            lineHeight: 1.2, textTransform: 'uppercase',
+            letterSpacing: '-0.5px',
+          }}>
+            Volunteer Spots<br/>Are Closed!
+          </h3>
+
+          {/* Message */}
+          <p style={{
+            color: '#444', fontSize: '0.95rem',
+            lineHeight: 1.6, marginBottom: '1.25rem',
+            fontWeight: 500,
+          }}>
+            All positions have been filled — but you can still be part of the action!
+          </p>
+
+          {/* July 16th card */}
+          <div style={{
+            background: '#C6FF33',
+            border: '3px solid #000',
+            boxShadow: '5px 5px 0px #000',
+            padding: '1.25rem', marginBottom: '1.5rem',
+            textAlign: 'left',
+          }}>
+            <div style={{ 
+              color: '#000', fontWeight: 900, fontSize: '1.15rem', 
+              marginBottom: '0.4rem', textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+            }}>
+              📅 July 16th — Join Us!
+            </div>
+            <p style={{ color: '#222', fontSize: '0.9rem', lineHeight: 1.6, margin: 0, fontWeight: 500 }}>
+              Come to <strong>City Center Mall, Guwahati</strong> and play <strong>FREE mini games</strong> to win exciting gifts & prizes!
+            </p>
+          </div>
+
+          {/* Social follow */}
+          <p style={{
+            color: '#666', fontSize: '0.8rem',
+            marginBottom: '0.75rem', fontWeight: 700,
+            textTransform: 'uppercase', letterSpacing: '1.5px',
+          }}>
+            Follow Us ↓
+          </p>
+
+          <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center', marginBottom: '1.5rem' }}>
+            <a 
+              href="https://www.twitch.tv/pressstartxo" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.7rem 1.3rem',
+                background: '#9146FF', color: '#fff',
+                border: '3px solid #000', boxShadow: '4px 4px 0px #000',
+                textDecoration: 'none', fontWeight: 800, fontSize: '0.9rem',
+                textTransform: 'uppercase', letterSpacing: '0.5px',
+                transition: 'transform 0.1s, box-shadow 0.1s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translate(2px, 2px)'; e.currentTarget.style.boxShadow = '2px 2px 0px #000'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translate(0, 0)'; e.currentTarget.style.boxShadow = '4px 4px 0px #000'; }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 2H3v16h5v4l4-4h5l4-4V2z"/><path d="M11 11V7"/><path d="M16 11V7"/></svg>
+              Twitch
+            </a>
+            <a 
+              href="https://www.instagram.com/pressstartxo/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{
+                display: 'flex', alignItems: 'center', gap: '0.5rem',
+                padding: '0.7rem 1.3rem',
+                background: '#E1306C', color: '#fff',
+                border: '3px solid #000', boxShadow: '4px 4px 0px #000',
+                textDecoration: 'none', fontWeight: 800, fontSize: '0.9rem',
+                textTransform: 'uppercase', letterSpacing: '0.5px',
+                transition: 'transform 0.1s, box-shadow 0.1s',
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translate(2px, 2px)'; e.currentTarget.style.boxShadow = '2px 2px 0px #000'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translate(0, 0)'; e.currentTarget.style.boxShadow = '4px 4px 0px #000'; }}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              Instagram
+            </a>
+          </div>
+
+          {/* Got it button */}
+          <button 
+            onClick={onClose}
+            style={{
+              width: '100%', padding: '0.85rem',
+              background: '#000', border: '3px solid #000',
+              color: '#fff',
+              cursor: 'pointer', fontSize: '0.95rem', fontWeight: 800,
+              textTransform: 'uppercase', letterSpacing: '1px',
+              boxShadow: '4px 4px 0px #444',
+              transition: 'transform 0.1s, box-shadow 0.1s',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.transform = 'translate(2px, 2px)'; e.currentTarget.style.boxShadow = '2px 2px 0px #444'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = 'translate(0, 0)'; e.currentTarget.style.boxShadow = '4px 4px 0px #444'; }}
+          >
+            Got it! ✌️
+          </button>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 function App() {
   const [showContactModal, setShowContactModal] = useState(false);
+  const [showVolunteerFull, setShowVolunteerFull] = useState(false);
   const [activeRegGame, setActiveRegGame] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(null); // 'checking', 'SUCCESS', 'FAILED', null
@@ -1198,7 +1370,13 @@ function App() {
       
       <CountdownSection />
       
-      <RegistrationSection onRegister={(gameKey) => setActiveRegGame(gameKey)} />
+      <RegistrationSection onRegister={(gameKey) => {
+        if (gameKey === 'volunteer-full') {
+          setShowVolunteerFull(true);
+        } else {
+          setActiveRegGame(gameKey);
+        }
+      }} />
       
       <MarqueeStrip items={marqueeItems1} variant="lime" />
       <Footer />
@@ -1244,6 +1422,13 @@ function App() {
       {showContactModal && (
         <ContactModal onClose={() => setShowContactModal(false)} />
       )}
+
+      {/* Volunteer Full Modal */}
+      <AnimatePresence>
+        {showVolunteerFull && (
+          <VolunteerFullModal onClose={() => setShowVolunteerFull(false)} />
+        )}
+      </AnimatePresence>
 
       {/* Transaction Status Overlay */}
       {paymentStatus && (

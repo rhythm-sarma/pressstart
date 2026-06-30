@@ -23,6 +23,7 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
     captainEmail: '',
     captainPhone: '',
     captainWhatsApp: '',
+    captainInstagram: '',
     
     // Step 3 — Team Roster
     player2: '',
@@ -129,6 +130,7 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
           captainEmail: formData.captainEmail,
           captainPhone: formData.captainPhone,
           captainWhatsApp: formData.captainWhatsApp,
+          captainInstagram: formData.captainInstagram,
           player2: formData.player2,
           player3: formData.player3,
           player4: formData.player4,
@@ -318,6 +320,18 @@ function ValorantFormModal({ onClose, onSubmit, isSubmitting }) {
                         />
                         {errors.captainWhatsApp && <span className="field-error">{errors.captainWhatsApp}</span>}
                       </div>
+                    </div>
+
+                    <div className={`form-group ${errors.captainInstagram ? 'has-error' : ''}`}>
+                      <label htmlFor="captainInstagram">Instagram ID</label>
+                      <input
+                        type="text"
+                        id="captainInstagram"
+                        name="captainInstagram"
+                        value={formData.captainInstagram}
+                        onChange={handleChange}
+                        placeholder="@username"
+                      />
                     </div>
                   </div>
                 </motion.div>

@@ -625,6 +625,26 @@ body {
   filter: grayscale(40%);
 }
 
+.btn-vacancy-full {
+  background: #FF3B3B !important;
+  border: 3px solid #000 !important;
+  color: #fff !important;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0px #000;
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: transform 0.1s, box-shadow 0.1s !important;
+}
+
+.btn-vacancy-full:hover {
+  transform: translate(2px, 2px) !important;
+  box-shadow: 2px 2px 0px #000 !important;
+}
+
 /* ===== ACTIVITIES SECTION ===== */
 .activities {
   background: var(--lime);
